@@ -8,7 +8,13 @@ $taskVswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Insta
 if (!(Get-Command link.exe -ErrorAction SilentlyContinue) -and (Test-Path -LiteralPath $taskVswhere)) {
     $taskVisualStudio = & $taskVswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
     if ($taskVisualStudio) {
-        & (Join-Path $taskVisualStudio 'Common7\Tools\Launch-VsDevShell.ps1') -Arch amd64 -HostArch amd64 -SkipAutomaticLocation
+        # Pass -VsInstallPath explicitly: without it the script prompts when several
+        # Visual Studio installations exist, which hangs non-interactive builds.
+        try {
+            & (Join-Path $taskVisualStudio 'Common7\Tools\Launch-VsDevShell.ps1') -VsInstallPath $taskVisualStudio -Arch amd64 -HostArch amd64 -SkipAutomaticLocation
+        } catch {
+            Write-Warning "Could not initialise the Visual Studio developer shell: $($_.Exception.Message)"
+        }
     }
 }
 Push-Location -LiteralPath $taskRoot
