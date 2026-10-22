@@ -99,7 +99,6 @@ Rust 测试需要 MSVC 开发环境，可从 Developer PowerShell 执行。
 | src-tauri/src/lib.rs | Tauri 命令注册 |
 | src-tauri/icons | 应用图标资源 |
 | themes | 内置主题目录，`builtin.json` 为唯一真源 |
-| legacy | 原版主题数据快照，仅用于来源核对；构建和测试不依赖 |
 | tests | Python 主题数据测试 |
 | scripts | 构建、主题校验与验证脚本 |
 | design | 图标候选源文件，供二次修改 |
@@ -117,7 +116,7 @@ Rust 测试需要 MSVC 开发环境，可从 Developer PowerShell 执行。
 
 校验覆盖：9 个主题、每主题恰好 35 个颜色键且顺序固定、取值为 `0..0xFFFFFF` 的整数、名称大小写不敏感去重、SourceUrl 为 `null` 或 HTTP/HTTPS、顶层字段集合严格。
 
-`--from-legacy LTspice-themes.txt` 是可选的单向导入，只做格式转换，用于把原版 txt 转成 json，不会对颜色做任何补丁。
+`--from-legacy LTspice-themes.txt` 是可选的单向导入，只做格式转换，用于把你手上的原版 txt 转成 json，不会对颜色做任何补丁。仓库不再附带这份快照，需要时自行提供。
 
 ### 修改颜色写入规则
 
@@ -155,7 +154,7 @@ npm run tauri icon -- design/icon-review/icon-B-approved.png --output src-tauri/
 
 源代码以 [MIT 许可证](LICENSE) 发布。
 
-部分主题保留原始 SourceUrl；`themes/builtin.json` 的 `sourceFile` 与 `sourceSha256` 记录了来源文件及其摘要，原版快照见 `legacy/LTspice-themes.txt`（可选文件，不参与构建与测试）。应用图标参考 LTspice 的三角与 LT 识别重新绘制；电路预览包含本机 LTspice ASY 图元导出的几何。
+部分主题保留原始 SourceUrl；`themes/builtin.json` 的 `sourceFile` 与 `sourceSha256` 记录了来源文件及其摘要，可据此核对生成结果。应用图标参考 LTspice 的三角与 LT 识别重新绘制；电路预览包含本机 LTspice ASY 图元导出的几何。
 
 第三方主题配色、应用图标与电路图元可能另有授权条件，不在 MIT 许可范围内；二次分发前请自行核对并保留原始 SourceUrl 与声明。
 
